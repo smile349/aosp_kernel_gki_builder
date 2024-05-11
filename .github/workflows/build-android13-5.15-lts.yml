@@ -197,14 +197,14 @@ jobs:
           mkdir android-kernel
           unzip android-kernel.zip -d android-kernel/
         fi
-- name: Setting the kernel compilation configuration
-  run: |
-    cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+    - name: Setting the kernel compilation configuration
+    run: |
+     cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
     # 添加自定义配置
-    echo "CONFIG_LOCALVERSION_AUTO=n" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
-    echo 'CONFIG_LOCALVERSION="-Nachoneko"' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
-    echo "CONFIG_KALLSYMS=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
-    echo "CONFIG_KALLSYMS_ALL=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+     echo "CONFIG_LOCALVERSION_AUTO=n" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+     echo 'CONFIG_LOCALVERSION="-Nachoneko"' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+     echo "CONFIG_KALLSYMS=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+     echo "CONFIG_KALLSYMS_ALL=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
     - name: Download source boot image file for KernelSU 
       if: env.BUILD_KERNELSU_BOOT_IMG == 'true'
       run: |
