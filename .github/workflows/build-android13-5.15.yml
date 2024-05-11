@@ -197,7 +197,25 @@ jobs:
           mkdir android-kernel
           unzip android-kernel.zip -d android-kernel/
         fi
-
+    - name: seting
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel
+          # 添加自定义配置
+        echo "CONFIG_LOCALVERSION_AUTO=n" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+        echo 'CONFIG_LOCALVERSION="-Nachoneko"' >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+        echo "CONFIG_KALLSYMS=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+        echo "CONFIG_KALLSYMS_ALL=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_CONFIG }}
+    - name: Download source boot image file for KernelSU 
+      if: env.BUILD_KERNELSU_BOOT_IMG == 'true'
+      run: |
+        cd $GITHUB_WORKSPACE/kernel_workspace
+        mkdir bootimg_tmp
+        wget -O ./bootimg_tmp/boot-source-kernelsu.img ${{ env.KERNELSU_SOURCE_BOOT_IMAGE }}
+        if [ -f ./bootimg_tmp/boot-source-kernelsu.img ]; then
+            echo "HAVE_KERNELSU_SOURCE_BOOT_IMAGE=true" >> $GITHUB_ENV
+            echo "SOURCE_KERNELSU_BOOTIMG_PATH=$GITHUB_WORKSPACE/kernel_workspace/bootimg_tmp/boot-source-kernelsu.img" >> $GITHUB_ENV
+        fi
+        
     - name: Download source boot image file for KernelSU 
       if: env.BUILD_KERNELSU_BOOT_IMG == 'true'
       run: |
